@@ -14,8 +14,15 @@ locals {
 
   azure_subscription_id = "00000000-0000-0000-0000-000000000000"
   azure_tenant_id       = "00000000-0000-0000-0000-000000000000"
+  azure_location        = "eastus"
 
   network_cidr = "10.20.0.0/16"
+
+  storage_account_name          = "stprodexample"
+  storage_account_tier          = "Standard"
+  storage_account_replication   = "LRS"
+  storage_account_containers    = ["logs", "data", "backups"]
+  storage_resource_group_name   = "rg-prod"
 
   public_subnet_cidrs = [
     "10.20.0.0/24",
@@ -62,6 +69,19 @@ module "network" {
   enable_nat_gateway   = local.enable_nat_gateway
 }
 
+module "storage_account" {
+  source = "../../modules/storage_account"
+
+  environment            = local.environment
+  location               = local.azure_location
+  resource_group_name    = local.storage_resource_group_name
+  account_name           = local.storage_account_name
+  account_tier           = local.storage_account_tier
+  account_replication_type = local.storage_account_replication
+  containers             = local.storage_account_containers
+  tags                   = local.common_tags
+}
+
 output "vpc_id" {
   description = "ID of the prod VPC"
   value       = module.network.vpc_id
@@ -75,4 +95,19 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   description = "Private subnet identifiers for prod"
   value       = module.network.private_subnet_ids
+}
+
+output "storage_account_id" {
+  description = "ID of the prod storage account"
+  value       = module.storage_account.storage_account_id
+}
+
+output "storage_account_name" {
+  description = "Name of the prod storage account"
+  value       = module.storage_account.storage_account_name
+}
+
+output "storage_primary_blob_endpoint" {
+  description = "Primary blob endpoint for prod storage account"
+  value       = module.storage_account.primary_blob_endpoint
 }
