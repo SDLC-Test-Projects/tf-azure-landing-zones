@@ -33,6 +33,25 @@ locals {
   azure_resource_group_name = "dev-rg"
   storage_account_name      = "devstore001"
 
+  enable_app_service = false
+
+  app_service_plan = {
+    name = "dev-asp"
+    sku = {
+      tier = "PremiumV2"
+      size = "P1v2"
+    }
+  }
+
+  app_service = {
+    name     = "dev-webapp"
+    runtime  = { stack = "NODE", version = "18-lts" }
+    settings = {
+      "WEBSITE_RUN_FROM_PACKAGE" = "1"
+    }
+    slots = []
+  }
+
   common_tags = {
     Project     = local.project_name
     Environment = local.environment

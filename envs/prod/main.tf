@@ -38,6 +38,33 @@ locals {
 
   enable_nat_gateway = true
 
+  enable_app_service = true
+
+  app_service_plan = {
+    name = "prod-asp"
+    sku = {
+      tier = "PremiumV3"
+      size = "P1v3"
+    }
+  }
+
+  app_service = {
+    name    = "prod-webapp"
+    runtime = { stack = "DOTNET", version = "7.0" }
+    settings = {
+      "WEBSITE_RUN_FROM_PACKAGE" = "1"
+      "APPINSIGHTS_INSTRUMENTATIONKEY" = "00000000-0000-0000-0000-000000000000"
+    }
+    slots = [
+      {
+        name = "staging"
+        app_settings = {
+          "WEBSITE_RUN_FROM_PACKAGE" = "1"
+        }
+      }
+    ]
+  }
+
   common_tags = {
     Project     = local.project_name
     Environment = local.environment
