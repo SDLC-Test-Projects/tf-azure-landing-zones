@@ -1,0 +1,33 @@
+# ----------------------------------------------------------------------------
+# Sample variable definitions file
+# Copy to terraform.tfvars and customize per environment.
+# ----------------------------------------------------------------------------
+
+project_name = "example-project"
+
+# Primary environment identifier.
+environment = "dev"
+
+# AWS provider configuration
+aws_region  = "us-east-1"
+aws_profile = "default"
+
+# Azure provider configuration (placeholder values)
+azure_subscription_id = "00000000-0000-0000-0000-000000000000"
+azure_tenant_id       = "00000000-0000-0000-0000-000000000000"
+
+# Network defaults consumed by modules/network
+network_cidr = "10.0.0.0/16"
+
+# When using custom subnet layouts, uncomment and override as needed.
+# public_subnet_cidrs = [
+#   "10.0.0.0/24",
+#   "10.0.1.0/24",
+# ]
+#
+# private_subnet_cidrs = [
+#   "10.0.10.0/24",
+#   "10.0.11.0/24",
+# ]
+
+# enable_nat_gateway = false
