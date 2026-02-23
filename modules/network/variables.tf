@@ -22,7 +22,7 @@ variable "tags" {
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "CIDR blocks for public subnets"
-  default     = [
+  default = [
     "10.0.0.0/24",
     "10.0.1.0/24",
   ]
@@ -31,7 +31,7 @@ variable "public_subnet_cidrs" {
 variable "private_subnet_cidrs" {
   type        = list(string)
   description = "CIDR blocks for private subnets"
-  default     = [
+  default = [
     "10.0.10.0/24",
     "10.0.11.0/24",
   ]

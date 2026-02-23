@@ -29,9 +29,9 @@ locals {
 
   enable_nat_gateway = false
 
-  azure_location           = "eastus"
+  azure_location            = "eastus"
   azure_resource_group_name = "dev-rg"
-  storage_account_name     = "devstore001"
+  storage_account_name      = "devstore001"
 
   common_tags = {
     Project     = local.project_name
@@ -67,13 +67,13 @@ module "network" {
 module "storage_account" {
   source = "../../modules/storage_account"
 
-  environment           = local.environment
-  location              = local.azure_location
-  resource_group_name   = local.azure_resource_group_name
-  account_name          = local.storage_account_name
-  account_tier          = "Standard"
+  environment              = local.environment
+  location                 = local.azure_location
+  resource_group_name      = local.azure_resource_group_name
+  account_name             = local.storage_account_name
+  account_tier             = "Standard"
   account_replication_type = "LRS"
-  tags                  = local.common_tags
+  tags                     = local.common_tags
 
   containers = ["dev-container"]
 }

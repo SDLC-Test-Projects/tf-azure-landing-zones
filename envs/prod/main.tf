@@ -18,11 +18,11 @@ locals {
 
   network_cidr = "10.20.0.0/16"
 
-  storage_account_name          = "stprodexample"
-  storage_account_tier          = "Standard"
-  storage_account_replication   = "LRS"
-  storage_account_containers    = ["logs", "data", "backups"]
-  storage_resource_group_name   = "rg-prod"
+  storage_account_name        = "stprodexample"
+  storage_account_tier        = "Standard"
+  storage_account_replication = "LRS"
+  storage_account_containers  = ["logs", "data", "backups"]
+  storage_resource_group_name = "rg-prod"
 
   public_subnet_cidrs = [
     "10.20.0.0/24",
@@ -72,14 +72,14 @@ module "network" {
 module "storage_account" {
   source = "../../modules/storage_account"
 
-  environment            = local.environment
-  location               = local.azure_location
-  resource_group_name    = local.storage_resource_group_name
-  account_name           = local.storage_account_name
-  account_tier           = local.storage_account_tier
+  environment              = local.environment
+  location                 = local.azure_location
+  resource_group_name      = local.storage_resource_group_name
+  account_name             = local.storage_account_name
+  account_tier             = local.storage_account_tier
   account_replication_type = local.storage_account_replication
-  containers             = local.storage_account_containers
-  tags                   = local.common_tags
+  containers               = local.storage_account_containers
+  tags                     = local.common_tags
 }
 
 output "vpc_id" {
