@@ -29,6 +29,10 @@ locals {
 
   enable_nat_gateway = false
 
+  azure_location           = "eastus"
+  azure_resource_group_name = "dev-rg"
+  storage_account_name     = "devstore001"
+
   common_tags = {
     Project     = local.project_name
     Environment = local.environment
@@ -60,6 +64,20 @@ module "network" {
   enable_nat_gateway   = local.enable_nat_gateway
 }
 
+module "storage_account" {
+  source = "../../modules/storage_account"
+
+  environment           = local.environment
+  location              = local.azure_location
+  resource_group_name   = local.azure_resource_group_name
+  account_name          = local.storage_account_name
+  account_tier          = "Standard"
+  account_replication_type = "LRS"
+  tags                  = local.common_tags
+
+  containers = ["dev-container"]
+}
+
 output "vpc_id" {
   description = "ID of the dev VPC"
   value       = module.network.vpc_id
@@ -73,4 +91,19 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   description = "Private subnet identifiers for dev"
   value       = module.network.private_subnet_ids
+}
+
+output "storage_account_id" {
+  description = "ID of the dev storage account"
+  value       = module.storage_account.storage_account_id
+}
+
+output "storage_account_name" {
+  description = "Name of the dev storage account"
+  value       = module.storage_account.storage_account_name
+}
+
+output "storage_account_blob_endpoint" {
+  description = "Primary blob endpoint for dev storage account"
+  value       = module.storage_account.primary_blob_endpoint
 }
