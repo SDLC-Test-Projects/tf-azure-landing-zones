@@ -16,6 +16,27 @@ aws_profile = "default"
 azure_subscription_id = "00000000-0000-0000-0000-000000000000"
 azure_tenant_id       = "00000000-0000-0000-0000-000000000000"
 
+# Azure network module toggle + defaults. Set to true and adjust CIDRs
+# when provisioning Azure networking alongside/ instead of AWS.
+enable_azure_network    = false
+azure_vnet_address_space = [
+  "10.20.0.0/16",
+]
+
+# Map logical subnet keys to CIDR blocks. Keys should align with any
+# consuming modules or Azure subnet name overrides defined below.
+azure_subnet_prefixes = {
+  default = "10.20.1.0/24"
+  # web     = "10.20.2.0/24"
+  # app     = "10.20.3.0/24"
+}
+
+# Optionally override Azure subnet names; falls back to <key>-subnet when blank.
+azure_subnet_name_map = {
+  # default = "shared-default"
+  # web     = "frontend"
+}
+
 # Network defaults consumed by modules/network
 network_cidr = "10.0.0.0/16"
 
