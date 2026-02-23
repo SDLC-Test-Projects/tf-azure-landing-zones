@@ -26,6 +26,13 @@ This repository bootstraps a Terraform mono-repo meant to house shared modules a
 3. `make apply ENV=dev VAR_FILE=terraform.tfvars` – apply only after reviewing the plan output.
 4. `make lint` – run fmt/validate/tflint checks in one go.
 
+### Choosing a Cloud Network Target
+- **AWS default**: leave `enable_azure_network = false` and populate the existing AWS-specific inputs.
+- **Azure**: set `enable_azure_network = true`, define `azure_vnet_address_space`, and populate `azure_subnet_prefixes` (plus optional `azure_subnet_name_map`). Confirm Azure credentials via `azure_subscription_id`/`azure_tenant_id`.
+- After toggling, re-run `make plan ENV=dev VAR_FILE=terraform.tfvars` to verify the selected network graph.
+
+The module structure allows enabling only one provider at a time today; future work can orchestrate multi-cloud deployments within the same environment definition.
+
 > ⚠️ Backend configuration in `main.tf` is intentionally a placeholder. Replace the `local` backend with your remote state solution (e.g., S3 + DynamoDB, Azure Storage) before running `apply` in collaborative environments.
 
 ## Testing & Validation

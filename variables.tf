@@ -34,6 +34,32 @@ variable "azure_tenant_id" {
   default     = "00000000-0000-0000-0000-000000000000"
 }
 
+variable "enable_azure_network" {
+  type        = bool
+  description = "Toggle to provision the Azure virtual network module"
+  default     = false
+}
+
+variable "azure_vnet_address_space" {
+  type        = list(string)
+  description = "CIDR blocks assigned to the Azure virtual network"
+  default     = ["10.20.0.0/16"]
+}
+
+variable "azure_subnet_prefixes" {
+  type        = map(string)
+  description = "Map of subnet keys to CIDR prefixes within the Azure VNet"
+  default = {
+    default = "10.20.1.0/24"
+  }
+}
+
+variable "azure_subnet_name_map" {
+  type        = map(string)
+  description = "Optional mapping of subnet keys to explicit Azure subnet names"
+  default     = {}
+}
+
 variable "network_cidr" {
   type        = string
   description = "Base CIDR block for the core network"
