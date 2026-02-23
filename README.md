@@ -26,6 +26,31 @@ This repository bootstraps a Terraform mono-repo meant to house shared modules a
 3. `make apply ENV=dev VAR_FILE=terraform.tfvars` – apply only after reviewing the plan output.
 4. `make lint` – run fmt/validate/tflint checks in one go.
 
+### Azure App Service Template
+- Root `variables.tf` exposes `enable_app_service` plus inputs for plan name/SKU, Linux runtime stack, optional container image, app settings, and slot definitions. Each environment (`envs/dev`, `envs/prod`) defines locals for the names and SKUs it should use and passes them into `module "app_service"`.
+- In your chosen `terraform.tfvars`, set `enable_app_service = true` and provide any overrides that differ from the environment defaults (for example, a custom runtime or slot map).
+- Optional deployment slots can be declared by populating the slot object list input; each entry adds its own `azurerm_linux_web_app_slot` with the provided settings and inherits shared tags.
+- Example snippet to drop into your environment var file:
+```
+enable_app_service         = true
+app_service_app_name       = "quechua-dev-web"
+app_service_plan_sku_tier  = "P1v3"
+app_service_plan_sku_size  = "P1v3"
+app_service_runtime_stack  = {
+  stack = "node"
+  version = "18-lts"
+}
+app_service_slots = [
+  {
+    name              = "staging"
+    configuration_map = {
+      APP_ENV = "staging"
+    }
+  }
+]
+```
+- After toggling the module, rerun `make plan ENV=dev VAR_FILE=terraform.tfvars` (and for `prod` as needed) to confirm the App Service plan, web app, and slot resources are in the graph. Use `make apply` once the plan looks correct to provision the Linux plan, web app, and outputs such as the default hostname.
+
 ### Choosing a Cloud Network Target
 - **AWS default**: leave `enable_azure_network = false` and populate the existing AWS-specific inputs.
 - **Azure**: set `enable_azure_network = true`, define `azure_vnet_address_space`, and populate `azure_subnet_prefixes` (plus optional `azure_subnet_name_map`). Confirm Azure credentials via `azure_subscription_id`/`azure_tenant_id`.
@@ -41,6 +66,7 @@ The module structure allows enabling only one provider at a time today; future w
 - `make tflint` – lint provider usage inside the selected environment directory.
 - `make lint` – run the full suite locally; CI should mirror this target.
 - `make hooks` – install and execute pre-commit hooks (fmt, validate, tflint) across the repo.
+- When App Service is enabled, include `make plan ENV=<env> VAR_FILE=terraform.tfvars` to compare environment-specific inputs (plan SKU, runtime, slots) and ensure hostnames/outputs align with expectations before applying.
 
 ## Contributing
 1. Create a feature branch.
