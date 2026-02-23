@@ -35,7 +35,24 @@ variable "azure_tenant_id" {
 }
 
 variable "network_cidr" {
-  type        = string
   description = "Base CIDR block for the core network"
   default     = "10.0.0.0/16"
+}
+
+variable "azure_location" {
+  type        = string
+  description = "Azure region for resources"
+  default     = "eastus"
+}
+
+variable "azure_resource_group_name" {
+  type        = string
+  description = "Name of the Azure resource group"
+  default     = "example-rg"
+}
+
+variable "storage_account_name" {
+  type        = string
+  description = "Name of the storage account"
+  default     = "examplestorage"
 }

@@ -25,10 +25,10 @@ resource "aws_internet_gateway" "this" {
 }
 
 resource "aws_subnet" "public" {
-  for_each          = length(var.public_subnet_cidrs) > 0 ? tomap({ for idx, cidr in var.public_subnet_cidrs : idx => cidr }) : {}
-  vpc_id            = aws_vpc.this.id
-  cidr_block        = each.value
-  availability_zone = element(data.aws_availability_zones.available.names, each.key)
+  for_each                = length(var.public_subnet_cidrs) > 0 ? tomap({ for idx, cidr in var.public_subnet_cidrs : idx => cidr }) : {}
+  vpc_id                  = aws_vpc.this.id
+  cidr_block              = each.value
+  availability_zone       = element(data.aws_availability_zones.available.names, each.key)
   map_public_ip_on_launch = true
 
   tags = merge(local.merged_tags, { Tier = "public" })
@@ -47,7 +47,7 @@ resource "aws_eip" "nat" {
   count = var.enable_nat_gateway ? 1 : 0
 
   domain = "vpc"
-  tags = local.merged_tags
+  tags   = local.merged_tags
 }
 
 resource "aws_nat_gateway" "this" {
@@ -84,7 +84,7 @@ resource "aws_route_table_association" "public" {
 }
 
 resource "aws_route_table" "private" {
-  count = var.enable_nat_gateway ? 1 : 0
+  count  = var.enable_nat_gateway ? 1 : 0
   vpc_id = aws_vpc.this.id
 
   dynamic "route" {
