@@ -29,6 +29,26 @@ module "storage_account" {
   tags                = local.common_tags
 }
 
+module "app_service" {
+  source = "./modules/app_service"
+  count  = var.enable_app_service ? 1 : 0
+
+  environment         = var.environment
+  location            = var.azure_location
+  resource_group_name = var.azure_resource_group_name
+
+  plan_name = var.app_service_plan_name
+  plan_sku  = var.app_service_plan_sku
+
+  web_app_name = var.app_service_name
+  runtime      = var.app_service_runtime
+
+  app_settings = var.app_service_app_settings
+  slots        = var.app_service_slots
+
+  tags = local.common_tags
+}
+
 output "network_id" {
   description = "Placeholder output until modules are implemented"
   value       = module.network.network_id

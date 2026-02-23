@@ -97,6 +97,27 @@ module "storage_account" {
   containers = ["dev-container"]
 }
 
+module "app_service" {
+  source = "../../modules/app_service"
+  count  = local.enable_app_service ? 1 : 0
+
+  environment         = local.environment
+  location            = local.azure_location
+  resource_group_name = local.azure_resource_group_name
+
+  plan_name             = local.app_service_plan.name
+  plan_sku              = local.app_service_plan.sku
+  plan_per_site_scaling = false
+
+  web_app_name = local.app_service.name
+  runtime      = local.app_service.runtime
+
+  app_settings = local.app_service.settings
+  slots        = local.app_service.slots
+
+  tags = local.common_tags
+}
+
 output "vpc_id" {
   description = "ID of the dev VPC"
   value       = module.network.vpc_id
@@ -125,4 +146,9 @@ output "storage_account_name" {
 output "storage_account_blob_endpoint" {
   description = "Primary blob endpoint for dev storage account"
   value       = module.storage_account.primary_blob_endpoint
+}
+
+output "app_service_hostname" {
+  description = "Default hostname for the dev App Service"
+  value       = local.enable_app_service ? module.app_service[0].web_app_hostname : null
 }
