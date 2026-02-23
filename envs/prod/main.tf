@@ -38,6 +38,33 @@ locals {
 
   enable_nat_gateway = true
 
+  enable_app_service = true
+
+  app_service_plan = {
+    name = "prod-asp"
+    sku = {
+      tier = "PremiumV3"
+      size = "P1v3"
+    }
+  }
+
+  app_service = {
+    name    = "prod-webapp"
+    runtime = { stack = "DOTNET", version = "7.0" }
+    settings = {
+      "WEBSITE_RUN_FROM_PACKAGE" = "1"
+      "APPINSIGHTS_INSTRUMENTATIONKEY" = "00000000-0000-0000-0000-000000000000"
+    }
+    slots = [
+      {
+        name = "staging"
+        app_settings = {
+          "WEBSITE_RUN_FROM_PACKAGE" = "1"
+        }
+      }
+    ]
+  }
+
   common_tags = {
     Project     = local.project_name
     Environment = local.environment
@@ -82,6 +109,27 @@ module "storage_account" {
   tags                     = local.common_tags
 }
 
+module "app_service" {
+  source = "../../modules/app_service"
+  count  = local.enable_app_service ? 1 : 0
+
+  environment         = local.environment
+  location            = local.azure_location
+  resource_group_name = local.storage_resource_group_name
+
+  plan_name             = local.app_service_plan.name
+  plan_sku              = local.app_service_plan.sku
+  plan_per_site_scaling = true
+
+  web_app_name = local.app_service.name
+  runtime      = local.app_service.runtime
+
+  app_settings = local.app_service.settings
+  slots        = local.app_service.slots
+
+  tags = local.common_tags
+}
+
 output "vpc_id" {
   description = "ID of the prod VPC"
   value       = module.network.vpc_id
@@ -110,4 +158,9 @@ output "storage_account_name" {
 output "storage_primary_blob_endpoint" {
   description = "Primary blob endpoint for prod storage account"
   value       = module.storage_account.primary_blob_endpoint
+}
+
+output "app_service_hostname" {
+  description = "Default hostname for the prod App Service"
+  value       = local.enable_app_service ? module.app_service[0].web_app_hostname : null
 }

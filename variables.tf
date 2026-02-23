@@ -82,3 +82,60 @@ variable "storage_account_name" {
   description = "Name of the storage account"
   default     = "examplestorage"
 }
+
+variable "enable_app_service" {
+  type        = bool
+  description = "Toggle to provision the Azure App Service module"
+  default     = false
+}
+
+variable "app_service_plan_name" {
+  type        = string
+  description = "Name assigned to the App Service plan"
+  default     = "example-asp"
+}
+
+variable "app_service_plan_sku" {
+  type = object({
+    tier = string
+    size = string
+  })
+  description = "SKU tier and size for the App Service plan"
+  default = {
+    tier = "PremiumV2"
+    size = "P1v2"
+  }
+}
+
+variable "app_service_name" {
+  type        = string
+  description = "Name of the primary App Service web app"
+  default     = "example-webapp"
+}
+
+variable "app_service_runtime" {
+  type = object({
+    stack   = string
+    version = string
+  })
+  description = "Runtime stack configuration for the Linux App Service"
+  default = {
+    stack   = "NODE"
+    version = "18-lts"
+  }
+}
+
+variable "app_service_app_settings" {
+  type        = map(string)
+  description = "App settings passed to the App Service instance"
+  default     = {}
+}
+
+variable "app_service_slots" {
+  type = list(object({
+    name         = string
+    app_settings = map(string)
+  }))
+  description = "Optional deployment slots with their own app settings"
+  default     = []
+}
