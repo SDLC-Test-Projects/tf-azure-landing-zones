@@ -17,6 +17,7 @@ module "network" {
   aws_region  = var.aws_region
   cidr_block  = var.network_cidr
   environment = var.environment
+  team_tag    = var.team_tag
   tags        = local.common_tags
 }
 
