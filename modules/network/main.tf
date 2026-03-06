@@ -5,6 +5,7 @@ locals {
       Name        = local.name_prefix
       Environment = var.environment
     },
+    length(trimspace(var.team_tag)) > 0 ? { Team = trimspace(var.team_tag) } : {},
     var.tags,
   )
 }

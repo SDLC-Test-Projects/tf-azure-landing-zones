@@ -19,6 +19,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "team_tag" {
+  type        = string
+  description = "Team tag applied to network resources"
+  default     = ""
+}
+
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "CIDR blocks for public subnets"
