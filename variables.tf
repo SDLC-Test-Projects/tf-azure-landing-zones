@@ -10,6 +10,12 @@ variable "environment" {
   default     = "dev"
 }
 
+variable "team_tag" {
+  type        = string
+  description = "Team name to apply to network resource tags"
+  default     = ""
+}
+
 variable "aws_region" {
   type        = string
   description = "AWS region used by root modules"
