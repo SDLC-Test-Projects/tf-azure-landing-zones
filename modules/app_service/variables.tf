@@ -130,16 +130,16 @@ variable "ftps_state" {
 
 variable "slots" {
   type = list(object({
-    name                = string
-    app_settings        = optional(map(string), {})
-    always_on           = optional(bool)
-    health_check_path   = optional(string)
-    runtime             = optional(object({
+    name              = string
+    app_settings      = optional(map(string), {})
+    always_on         = optional(bool)
+    health_check_path = optional(string)
+    runtime = optional(object({
       stack   = string
       version = string
     }))
     auto_swap_slot_name = optional(string)
-    connection_strings  = optional(list(object({
+    connection_strings = optional(list(object({
       name  = string
       type  = string
       value = string

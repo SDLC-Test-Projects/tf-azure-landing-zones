@@ -25,6 +25,12 @@ variable "created_by" {
   default     = ""
 }
 
+variable "purpose" {
+  type        = string
+  description = "Purpose label applied to resource tags"
+  default     = ""
+}
+
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "CIDR blocks for public subnets"

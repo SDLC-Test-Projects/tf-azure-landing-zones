@@ -18,11 +18,11 @@ locals {
 }
 
 resource "azurerm_service_plan" "this" {
-  name                = var.plan_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  os_type             = "Linux"
-  sku_name            = var.plan_sku.size
+  name                     = var.plan_name
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  os_type                  = "Linux"
+  sku_name                 = var.plan_sku.size
   per_site_scaling_enabled = var.plan_per_site_scaling
   worker_count             = coalesce(try(var.plan_sku.capacity, null), var.plan_worker_count)
 
@@ -40,11 +40,11 @@ resource "azurerm_linux_web_app" "this" {
   app_settings            = var.app_settings
 
   site_config {
-    always_on         = var.always_on
-    linux_fx_version  = local.primary_linux_fx_version
-    ftps_state        = var.ftps_state
-    health_check_path = var.health_check_path
-    app_command_line  = var.app_command_line != "" ? var.app_command_line : null
+    always_on           = var.always_on
+    linux_fx_version    = local.primary_linux_fx_version
+    ftps_state          = var.ftps_state
+    health_check_path   = var.health_check_path
+    app_command_line    = var.app_command_line != "" ? var.app_command_line : null
     minimum_tls_version = "1.2"
   }
 
@@ -91,11 +91,11 @@ resource "azurerm_linux_web_app_slot" "this" {
   app_settings = merge(var.app_settings, try(each.value.app_settings, {}))
 
   site_config {
-    always_on         = try(each.value.always_on, var.always_on)
-    linux_fx_version  = local.slot_linux_fx_versions[each.key]
-    ftps_state        = var.ftps_state
-    health_check_path = try(each.value.health_check_path, var.health_check_path)
-    app_command_line  = var.app_command_line != "" ? var.app_command_line : null
+    always_on           = try(each.value.always_on, var.always_on)
+    linux_fx_version    = local.slot_linux_fx_versions[each.key]
+    ftps_state          = var.ftps_state
+    health_check_path   = try(each.value.health_check_path, var.health_check_path)
+    app_command_line    = var.app_command_line != "" ? var.app_command_line : null
     minimum_tls_version = "1.2"
   }
 
