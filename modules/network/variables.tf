@@ -19,6 +19,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "created_by" {
+  type        = string
+  description = "Identifier for the creator applied to resource tags"
+  default     = ""
+}
+
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "CIDR blocks for public subnets"
