@@ -52,7 +52,7 @@ locals {
     name    = "prod-webapp"
     runtime = { stack = "DOTNET", version = "7.0" }
     settings = {
-      "WEBSITE_RUN_FROM_PACKAGE" = "1"
+      "WEBSITE_RUN_FROM_PACKAGE"       = "1"
       "APPINSIGHTS_INSTRUMENTATIONKEY" = "00000000-0000-0000-0000-000000000000"
     }
     slots = [
@@ -111,15 +111,15 @@ module "storage_account" {
 
 module "app_service" {
 
-module "public_ip" {
-  source = "../../modules/public_ip"
-  
-  allocation_method = "Static"  # or "Dynamic", based on your need
-  ip_address = ""                # you can set a default IP here, if needed
-  
-  # Add other required variables here
-  tags = local.common_tags
-}
+  module "public_ip" {
+    source = "../../modules/public_ip"
+
+    allocation_method = "Static" # or "Dynamic", based on your need
+    ip_address        = ""       # you can set a default IP here, if needed
+
+    # Add other required variables here
+    tags = local.common_tags
+  }
   source = "../../modules/app_service"
   count  = local.enable_app_service ? 1 : 0
 
