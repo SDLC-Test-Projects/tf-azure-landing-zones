@@ -10,6 +10,12 @@ variable "environment" {
   default     = "dev"
 }
 
+variable "created_by" {
+  type        = string
+  description = "Identifier used to tag resource ownership"
+  default     = "unknown"
+}
+
 variable "aws_region" {
   type        = string
   description = "AWS region used by root modules"

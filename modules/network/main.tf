@@ -5,6 +5,7 @@ locals {
       Name        = local.name_prefix
       Environment = var.environment
     },
+    var.created_by != "" ? { createdBy = var.created_by } : {},
     var.tags,
   )
 }
