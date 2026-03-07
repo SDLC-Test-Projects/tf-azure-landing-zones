@@ -6,6 +6,7 @@ locals {
       Environment = var.environment
     },
     var.created_by != "" ? { createdBy = var.created_by } : {},
+    var.purpose != "" ? { Purpose = var.purpose } : {},
     var.tags,
   )
 }
