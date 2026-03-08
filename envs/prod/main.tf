@@ -137,7 +137,8 @@ module "public_ip" {
   app_settings = local.app_service.settings
   slots        = local.app_service.slots
 
-  tags = local.common_tags
+  purpose = "app-service"
+  tags    = local.common_tags
 }
 
 output "vpc_id" {

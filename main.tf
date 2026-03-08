@@ -47,7 +47,8 @@ module "app_service" {
   app_settings = var.app_service_app_settings
   slots        = var.app_service_slots
 
-  tags = local.common_tags
+  purpose = "app-service"
+  tags    = local.common_tags
 }
 
 output "network_id" {
