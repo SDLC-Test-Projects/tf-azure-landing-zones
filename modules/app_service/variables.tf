@@ -154,3 +154,9 @@ variable "tags" {
   description = "Base tags merged onto every App Service resource"
   default     = {}
 }
+
+variable "purpose" {
+  type        = string
+  description = "Purpose tag value applied to App Service resources"
+  default     = ""
+}

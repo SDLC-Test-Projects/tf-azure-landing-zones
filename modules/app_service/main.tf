@@ -5,6 +5,9 @@ locals {
       Environment = var.environment
     },
     var.tags,
+    var.purpose != "" ? {
+      Purpose = var.purpose
+    } : {},
   )
 
   slot_map = { for slot in var.slots : slot.name => slot }
