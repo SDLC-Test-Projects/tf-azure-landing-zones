@@ -145,3 +145,105 @@ variable "app_service_slots" {
   description = "Optional deployment slots with their own app settings"
   default     = []
 }
+
+variable "enable_firewall" {
+  type        = bool
+  description = "Toggle to provision the Azure Firewall module"
+  default     = false
+}
+
+variable "firewall_name" {
+  type        = string
+  description = "Base name assigned to the Azure Firewall resource"
+  default     = "example-firewall"
+}
+
+variable "firewall_sku" {
+  type = object({
+    name = string
+    tier = string
+  })
+  description = "SKU configuration for the Azure Firewall (name and tier)"
+  default = {
+    name = "AZFW_VNet"
+    tier = "Standard"
+  }
+}
+
+variable "firewall_threat_intel_mode" {
+  type        = string
+  description = "Threat intelligence mode for the Azure Firewall (Alert, Deny, or Off)"
+  default     = "Alert"
+}
+
+variable "firewall_hub_vnet_id" {
+  type        = string
+  description = "Resource ID of the hub virtual network hosting the firewall"
+  default     = null
+}
+
+variable "firewall_subnet_id" {
+  type        = string
+  description = "Resource ID of the AzureFirewallSubnet used by the firewall"
+  default     = null
+}
+
+variable "firewall_management_subnet_id" {
+  type        = string
+  description = "Resource ID of the AzureFirewallManagementSubnet when using forced tunneling"
+  default     = null
+}
+
+variable "firewall_public_ip_id" {
+  type        = string
+  description = "Resource ID of the public IP assigned to the firewall"
+  default     = null
+}
+
+variable "firewall_management_public_ip_id" {
+  type        = string
+  description = "Resource ID of the management public IP when using forced tunneling"
+  default     = null
+}
+
+variable "firewall_dns_servers" {
+  type        = list(string)
+  description = "Custom DNS server IP addresses applied to the firewall"
+  default     = []
+}
+
+variable "firewall_dns_proxy_enabled" {
+  type        = bool
+  description = "Controls whether DNS proxy is enabled on the firewall"
+  default     = false
+}
+
+variable "firewall_policy_id" {
+  type        = string
+  description = "Optional resource ID of an Azure Firewall Policy associated with the firewall"
+  default     = null
+}
+
+variable "firewall_log_analytics_workspace_id" {
+  type        = string
+  description = "Resource ID of the Log Analytics workspace for firewall diagnostics"
+  default     = null
+}
+
+variable "firewall_storage_account_id" {
+  type        = string
+  description = "Resource ID of the storage account receiving firewall diagnostics"
+  default     = null
+}
+
+variable "firewall_eventhub_authorization_rule_id" {
+  type        = string
+  description = "Authorization rule ID for the Event Hub target used by firewall diagnostics"
+  default     = null
+}
+
+variable "firewall_eventhub_name" {
+  type        = string
+  description = "Name of the Event Hub receiving firewall diagnostics"
+  default     = null
+}
